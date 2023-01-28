@@ -16,4 +16,4 @@ sudo apt install build-essential flex bison
 
 ## `-Wno-yacc`
 
-These files were built with the `-Wno-yacc` compile flag that was not documented during flags that would get rid of compile errors I was getting related to `%define parse.error verbose` being invalid in POSIX yacc.
+These files were built with the `-Wno-yacc` compile flag that was not documented during class that would get rid of compile errors I was getting related to `%define parse.error verbose` being invalid in POSIX yacc.
