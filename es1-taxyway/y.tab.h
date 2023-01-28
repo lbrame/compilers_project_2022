@@ -49,19 +49,13 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    DIR_UP = 258,
-    DIR_DOWN = 259,
-    DIR_RIGHT = 260,
-    DIR_LEFT = 261,
-    NUMBER = 262
+    TOK_NUMBER = 258,
+    TOK_DIRECTION = 259
   };
 #endif
 /* Tokens.  */
-#define DIR_UP 258
-#define DIR_DOWN 259
-#define DIR_RIGHT 260
-#define DIR_LEFT 261
-#define NUMBER 262
+#define TOK_NUMBER 258
+#define TOK_DIRECTION 259
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -72,7 +66,7 @@ union YYSTYPE
     int number;
     char* string;
 
-#line 76 "y.tab.h"
+#line 70 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

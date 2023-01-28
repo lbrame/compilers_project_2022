@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
@@ -9,15 +10,15 @@
 %}
 
 %define parse.error verbose
-
-%token DIR_UP DIR_DOWN DIR_RIGHT DIR_LEFT
+%start lines
 
 %union{
     int number;
     char* string;
 }
 
-%token <number> NUMBER;
+%token <number> TOK_NUMBER;
+%token <string> TOK_DIRECTION;
 
 %%
 
@@ -25,17 +26,14 @@ lines : line lines
 | line
 ;
 
-line: expr'\n'
+line : expr'\n'
 ;
 
-expr: command expr
+expr : command expr
 | command
 ;
 
-command : direction NUMBER'\n'
-;
-
-direction: DIR_UP'\n' | DIR_DOWN'\n' | DIR_LEFT'\n' | DIR_RIGHT'\n'
+command : TOK_DIRECTION TOK_NUMBER
 ;
 
 %%

@@ -1,26 +1,24 @@
 %{
 #include <stdio.h>
-#include <ctype.h>
 #include <string.h>
 
 #include "y.tab.h"
 %}
 
+DIRECTION "UP"|"up"|"DOWN"|"down"|"RIGHT"|"right"|"LEFT"|"left"
+
 %%
 
-^[1-9][0-9]*$           { yylval.number = atoi(yytext); return NUMBER;
-                          /* Match a single positive int and then end of line */}
+exit                    { exit(0); }
 
-UP|up                   { yylval.string = yytext; return DIR_UP; }
+[0-9]+           { yylval.number = atoi(yytext); return TOK_NUMBER; }
 
-DOWN|down               { yylval.string = yytext; return DIR_DOWN; }
+{DIRECTION}             { yylval.string = strndup(yytext, yyleng); return TOK_DIRECTION; }
 
-RIGHT|right             { yylval.string = yytext; return DIR_RIGHT; }
-
-LEFT|left               { yylval.string = yytext; return DIR_LEFT; }
 
 [ \t\r]
 
 \n                      { return '\n'; }
+.                       { return yytext[0]; }
 
 %%
