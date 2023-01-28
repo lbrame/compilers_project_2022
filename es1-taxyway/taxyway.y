@@ -21,11 +21,18 @@
 
 %%
 
-commands:
-| commands command
+lines : line lines
+| line
 ;
 
-command: direction NUMBER'\n'
+line: expr'\n'
+;
+
+expr: command expr
+| command
+;
+
+command : direction NUMBER'\n'
 ;
 
 direction: DIR_UP'\n' | DIR_DOWN'\n' | DIR_LEFT'\n' | DIR_RIGHT'\n'
