@@ -1,0 +1,1 @@
+yacc -d taxyway.y -Wno-yacc
