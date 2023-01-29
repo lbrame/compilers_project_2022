@@ -9,17 +9,21 @@
     int yyerror(const char *s);
 
     // Abstract Syntax Tree
-    typedef struct ast {
-        char* node;
-        int nchild;
-        struct ast *left;
-        struct ast *right;
-    } ast;
+    typedef struct AbstractSyntaxTree {
+        char* string;
+        struct AbstractSyntaxTree *left;
+        struct AbstractSyntaxTree *right;
+    } AbstractSyntaxTree;
 
     // Functions to handle the AST
-    void ast_print();
-    void ast_init();
-    void ast_add_child();
+    void ast_print(AbstractSyntaxTree *tree);
+    struct AbstractSyntaxTree *ast_create();
+    void ast_init(AbstractSyntaxTree *ast);
+    void ast_add_child(
+        AbstractSyntaxTree *ast,
+        AbstractSyntaxTree *left_child,
+        AbstractSyntaxTree *right_child
+    );
 
 %}
 
@@ -28,7 +32,10 @@
 
 %union{
     char *string;
+    struct AbstractSyntaxTree *ast;
 }
+
+%type <ast> E T F
 
 /* NUMBER is a string and not an integer. We do not need to actually
 perform a calculation, just
@@ -61,25 +68,52 @@ F : NUMBER
 
 %%
 
-/**
-Outputs the AST. Unless redirected, it will print to stdout.
-*/
-void ast_print() {
-
+/*
+Print contents of AST. By default, this is to stdout, unless redirected.
+**/
+void ast_print(AbstractSyntaxTree *tree) {
+    printf("TODO");
 }
 
 /**
-Initializes the AST into memory
+Creates the abstract syntax tree
 */
-void ast_init() {
-
+struct AbstractSyntaxTree *ast_create() {
+    struct AbstractSyntaxTree *ast;
+    ast = ((AbstractSyntaxTree *)malloc(sizeof(AbstractSyntaxTree)));
+    return ast;
 }
 
 /**
-Adds a child note to the AST
+Initializes an existing AbstractSyntaxTree node to empty values
+Needed to avoid garbage in memory!
 */
-void ast_add_child() {
+void ast_init(AbstractSyntaxTree *ast) {
+    ast->string = "";
+    ast->left = NULL;
+    ast->right = NULL;
+}
 
+/**
+Creates a new empty subtree and returns it
+*/
+struct AbstractSyntaxTree* ast_new_node(char* string) {
+    struct AbstractSyntaxTree *ast = ast_create();
+    ast_init(ast);
+    return ast;
+}
+
+/**
+Adds left and right child nodes to an AST
+*/
+void ast_add_child(
+        AbstractSyntaxTree *ast,
+        AbstractSyntaxTree *left_child,
+        AbstractSyntaxTree *right_child
+    )
+{
+    ast->left = left_child;
+    ast->right = right_child;
 }
 
 /**
@@ -89,6 +123,6 @@ int yyerror(const char *s) {
     fprintf(stderr, "%s\n", s);
 }
 
-void main(int argc, char *argv[]) {
+void main() {
     yyparse();
 }
