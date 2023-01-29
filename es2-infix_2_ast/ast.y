@@ -139,6 +139,7 @@ void ast_append(
 
 /**
 Be polite and free up the allocated memory that isn't needed anymore ;)
+Visits the tree with a Depth-First Search algorithm to free up every node.
 */
 void ast_clean(AbstractSyntaxTree *ast) {
     if (ast != NULL) {
