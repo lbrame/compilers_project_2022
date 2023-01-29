@@ -34,3 +34,4 @@ chmod +x run.sh test.sh
 * The CF grammar in use is exactly the one provided in the specification PDF.
 * Inspiration was taken from the `AST_EXAMPLE` folder on Moodle for the AST. While of course it's not a verbatim copy, it replicates its structure closely.
 * [This StackOverflow reply](https://stackoverflow.com/questions/9181146/freeing-memory-of-a-binary-tree-c) for the recursive tree-cleaning algorithm. Thank you, kind soul! Manual memory management is hard. It works well! While we still get some memory leaks from yylex(), yyparse() and strndup() in ast.l, `valgrind` does not seem to report memory leaks related to our SAT :)
+* Lex file `html.l` on Moodle to optionally parse from command line arguments

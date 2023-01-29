@@ -7,6 +7,7 @@
     extern int yyparse();
     extern int yylex();
     int yyerror(const char *s);
+    extern FILE* yyin;
 
     // Abstract Syntax Tree
     typedef struct AbstractSyntaxTree {
@@ -153,6 +154,14 @@ int yyerror(const char *s) {
     fprintf(stderr, "Parsing error: %s\n", s);
 }
 
-void main() {
+void main(int argc, char **argv) {
+    if (argc > 1) {
+        yyin = fopen(argv[1], "r");
+    }
+    else {
+        printf("Nothing passed to command line, reading from stdin:\n");
+        yyin = stdin;
+    }
+
     yyparse();
 }
