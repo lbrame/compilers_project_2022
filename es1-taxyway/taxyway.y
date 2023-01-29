@@ -83,7 +83,6 @@ void suggest_new_path() {
     }
 
     printf("\n");
-    
 }
 
 /**
