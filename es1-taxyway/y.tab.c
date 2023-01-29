@@ -86,6 +86,7 @@
     // Custom functions
     void move(char *direction, int movement);
     void validate();
+    void suggest_new_path();
 
     // Coordinates of the previous position
     // Initialized to the starting point
@@ -96,7 +97,7 @@
     int x_end = XEND;
     int y_end = YEND;
 
-#line 100 "y.tab.c"
+#line 101 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -156,12 +157,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 34 "taxyway.y"
+#line 35 "taxyway.y"
 
     int number;
     char* string;
 
-#line 165 "y.tab.c"
+#line 166 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -536,7 +537,7 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    44,    44,    45,    48,    51,    52,    55
+       0,    45,    45,    46,    49,    52,    53,    56
 };
 #endif
 
@@ -1324,19 +1325,19 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 48 "taxyway.y"
+#line 49 "taxyway.y"
                                         { validate(); }
-#line 1330 "y.tab.c"
+#line 1331 "y.tab.c"
     break;
 
   case 7:
-#line 55 "taxyway.y"
+#line 56 "taxyway.y"
                                         { move((yyvsp[-1].string), (yyvsp[0].number)); }
-#line 1336 "y.tab.c"
+#line 1337 "y.tab.c"
     break;
 
 
-#line 1340 "y.tab.c"
+#line 1341 "y.tab.c"
 
       default: break;
     }
@@ -1568,8 +1569,36 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 58 "taxyway.y"
+#line 59 "taxyway.y"
 
+
+/**
+Only called when final path is not reached.
+Tries to suggest a couple of moves that would bring the player to
+the expected end point.
+*/
+void suggest_new_path() {
+    printf(" \033[0;31m");
+    printf("Perhaps, you could add the following moves next time to reach the destination:\n");
+    printf("\033[0m");
+
+    if (x_start < x_end) {
+        printf("RIGHT %d ", x_end - x_start);
+    }
+    else if (x_start > x_end) {
+        printf("LEFT %d ", x_start - x_end);
+    }
+    
+    if (y_start < y_end) {
+        printf("UP %d ", y_end - y_start);
+    }
+    else if (y_start > y_end) {
+        printf("DOWN %d ", y_start - y_end);
+    }
+
+    printf("\n");
+    
+}
 
 /**
 Check if player has moved from starting point to expected end point
@@ -1582,10 +1611,10 @@ void validate() {
         exit(EXIT_SUCCESS);
     } else {
         printf(" \033[1;31m");
-        printf("Wrong path! You did not reach destination (%d; %d).\n You are at: (%d; %d).\n",
-        x_end, y_end, x_start, y_start
-        );
+        printf("Wrong path! You did not reach destination (%d; %d).\nYou are at: (%d; %d)\n",
+            x_end, y_end, x_start, y_start);
         printf("\033[0m");
+        suggest_new_path();
         exit(EXIT_FAILURE);
     }
 }

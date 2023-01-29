@@ -17,6 +17,7 @@
     // Custom functions
     void move(char *direction, int movement);
     void validate();
+    void suggest_new_path();
 
     // Coordinates of the previous position
     // Initialized to the starting point
@@ -58,6 +59,34 @@ command : TOK_DIRECTION TOK_NUMBER      { move($1, $2); }
 %%
 
 /**
+Only called when final path is not reached.
+Tries to suggest a couple of moves that would bring the player to
+the expected end point.
+*/
+void suggest_new_path() {
+    printf(" \033[0;31m");
+    printf("Perhaps, you could add the following moves next time to reach the destination:\n");
+    printf("\033[0m");
+
+    if (x_start < x_end) {
+        printf("RIGHT %d ", x_end - x_start);
+    }
+    else if (x_start > x_end) {
+        printf("LEFT %d ", x_start - x_end);
+    }
+    
+    if (y_start < y_end) {
+        printf("UP %d ", y_end - y_start);
+    }
+    else if (y_start > y_end) {
+        printf("DOWN %d ", y_start - y_end);
+    }
+
+    printf("\n");
+    
+}
+
+/**
 Check if player has moved from starting point to expected end point
 */
 void validate() {
@@ -68,10 +97,10 @@ void validate() {
         exit(EXIT_SUCCESS);
     } else {
         printf(" \033[1;31m");
-        printf("Wrong path! You did not reach destination (%d; %d).\n You are at: (%d; %d).\n",
-        x_end, y_end, x_start, y_start
-        );
+        printf("Wrong path! You did not reach destination (%d; %d).\nYou are at: (%d; %d)\n",
+            x_end, y_end, x_start, y_start);
         printf("\033[0m");
+        suggest_new_path();
         exit(EXIT_FAILURE);
     }
 }
