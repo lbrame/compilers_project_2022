@@ -73,11 +73,30 @@
 #include <ctype.h>
 #include <string.h>
 
+#define XSTART 0
+#define YSTART 0
+#define XEND 5
+#define YEND 6
+
+    // Lex-Yacc specific function declarations
     int yylex();
     int yyparse();
     void yyerror(const char *s);
 
-#line 81 "y.tab.c"
+    // Custom functions
+    void move(char *direction, int movement);
+    void validate();
+
+    // Coordinates of the previous position
+    // Initialized to the starting point
+    int x_start = XSTART;
+    int y_start = YSTART;
+
+    // Coordinates of the destination
+    int x_end = XEND;
+    int y_end = YEND;
+
+#line 100 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -137,12 +156,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 15 "taxyway.y"
+#line 34 "taxyway.y"
 
     int number;
     char* string;
 
-#line 146 "y.tab.c"
+#line 165 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -517,7 +536,7 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    25,    25,    26,    29,    32,    33,    36
+       0,    44,    44,    45,    48,    51,    52,    55
 };
 #endif
 
@@ -1304,8 +1323,20 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 4:
+#line 48 "taxyway.y"
+                                        { validate(); }
+#line 1330 "y.tab.c"
+    break;
 
-#line 1309 "y.tab.c"
+  case 7:
+#line 55 "taxyway.y"
+                                        { move((yyvsp[-1].string), (yyvsp[0].number)); }
+#line 1336 "y.tab.c"
+    break;
+
+
+#line 1340 "y.tab.c"
 
       default: break;
     }
@@ -1537,8 +1568,46 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 39 "taxyway.y"
+#line 58 "taxyway.y"
 
+
+/**
+Check if player has moved from starting point to expected end point
+*/
+void validate() {
+    if (x_start == x_end && y_start == y_end) {
+        printf("\033[1;32m");
+        printf("Correct!\n");
+        printf("\033[0m");
+        exit(EXIT_SUCCESS);
+    } else {
+        printf(" \033[1;31m");
+        printf("Wrong path! You did not reach destination (%d; %d).\n You are at: (%d; %d).\n",
+        x_end, y_end, x_start, y_start
+        );
+        printf("\033[0m");
+        exit(EXIT_FAILURE);
+    }
+}
+
+/**
+Move the player from the starting point to the command parsed
+by yacc
+*/
+void move (char *direction, int movement) {
+    if (!strcmp(direction, "up") || !strcmp(direction, "UP")) {
+        y_start += movement;
+    }
+    else if (!strcmp(direction, "down") || !strcmp(direction, "DOWN")) {
+        y_start -= movement;
+    }
+    else if (!strcmp(direction, "right") || !strcmp(direction, "RIGHT")) {
+        x_start += movement;
+    }
+    else if (!strcmp(direction, "left") || !strcmp(direction, "LEFT")) {
+        x_start -= movement;
+    }
+}
 
 void yyerror(const char *s) {
     fprintf(stderr, "%s\n", s);
