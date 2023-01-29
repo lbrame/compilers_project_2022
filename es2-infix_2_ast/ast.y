@@ -51,7 +51,7 @@ perform a calculation, just
 input : E'\n'           { ast_print($1,0);
                           printf("\n");
                           ast_clean($1);
-                          exit(EXIT_SUCCESS);}
+                          exit(EXIT_SUCCESS); }
 ;
 
 E : E '+' T             { $$ = ast_create("+"); ast_append($$, $1, $3); }
@@ -79,8 +79,10 @@ Print contents of AST. By default, this is to stdout, unless redirected.
 void ast_print(AbstractSyntaxTree *ast, int indent) {    
     int i = 0;
 
-    // visit node
+    // print current indent level
     for (i = 0; i < indent; i++) printf("\t");
+    
+    // visit node
     printf("%s", ast->string);
 
     // visit left subtree
