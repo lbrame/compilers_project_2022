@@ -21,12 +21,11 @@ F -> num
 * **Compile**: `make`
 * **Clean binaries**: `make clean`
 * **Run**: `./run.sh`
-* **Run quick test**: `./test.sh`
 
 Please note that `run.sh` and `test.sh` might need to be made excutable:
 
 ```bash
-chmod +x run.sh test.sh
+chmod +x run.sh
 ```
 
 ## Sources of inspiration
