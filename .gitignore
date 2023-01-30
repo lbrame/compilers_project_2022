@@ -1,4 +1,9 @@
+# Binaries
 a.out
+taxyway
+ast
+
+# Lex/Yaxx headers and C outputs
 lex.yy.c
 lex.yy.o
 y.tab.c
