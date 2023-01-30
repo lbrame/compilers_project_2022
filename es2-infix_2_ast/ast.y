@@ -109,7 +109,8 @@ char *allocate(char *string) {
 }
 
 /**
-Creates a new empty subtree and returns it
+Creates a new abstract syntax tree initialized with an input string
+and with no children, then returns it
 */
 struct AbstractSyntaxTree* ast_create(char* string) {
     struct AbstractSyntaxTree *ast;
