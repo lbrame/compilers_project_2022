@@ -4,4 +4,4 @@ all:
 		gcc lex.yy.c y.tab.c -ll -o ast
 
 clean:
-		rm lex.yy.c y.tab.c a.out
+		rm lex.yy.c y.tab.c y.tab.h ast
